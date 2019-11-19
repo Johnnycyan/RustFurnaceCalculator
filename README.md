@@ -1,4 +1,4 @@
-# RustFurnaceCalculator
+# Rust Furnace Calculator
  A calculator for using large furnaces in the game Rust
 
 General Info:
