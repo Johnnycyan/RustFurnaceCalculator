@@ -357,6 +357,12 @@ timeBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledfore
 #Prefill Text Boxes
 furnacesBox.insert(END, "1")
 
+#Bind Text Boxes
+furnacesBox.bind("<Return>", lambda event: calculateCommand())
+metalOreBox.bind("<Return>", lambda event: calculateCommand())
+sulfurOreBox.bind("<Return>", lambda event: calculateCommand())
+hqOreBox.bind("<Return>", lambda event: calculateCommand())
+
 #-----Place Text Boxes-----#
 #Inputs
 furnacesBox.grid(row = 1, column = 0, sticky = N, padx = 10)
