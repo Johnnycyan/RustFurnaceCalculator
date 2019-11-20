@@ -14,6 +14,7 @@ metalOreBoxContent = ''
 metalOre = 0
 sulfurOre = 0
 hqOre = 0
+charcoalTotal = 0
 woodNeeded = 0
 woodHqCalc = 10 / 12
 woodMetalCalc = 5 / 12
@@ -51,6 +52,9 @@ def resetCommand():
     woodRequiredBox.config(state=NORMAL)
     woodRequiredBox.delete(0, END)
     woodRequiredBox.config(state=DISABLED)
+    charcoalBox.config(state=NORMAL)
+    charcoalBox.delete(0, END)
+    charcoalBox.config(state=DISABLED)
     timeBox.config(state=NORMAL)
     timeBox.delete(0, END)
     timeBox.config(state=DISABLED)
@@ -65,6 +69,9 @@ def resetOutput():
     woodRequiredBox.config(state=NORMAL)
     woodRequiredBox.delete(0, END)
     woodRequiredBox.config(state=DISABLED)
+    charcoalBox.config(state=NORMAL)
+    charcoalBox.delete(0, END)
+    charcoalBox.config(state=DISABLED)
     timeBox.config(state=NORMAL)
     timeBox.delete(0, END)
     timeBox.config(state=DISABLED)
@@ -143,6 +150,7 @@ def timerCommand():
 def metalCommand():
     global secondsTimer
     global totalSeconds
+    global charcoalTotal
     seconds = 0
     minutes = 0
     metalOreCheck = int(metalOreBox.get()) / int(furnacesBox.get())
@@ -172,6 +180,10 @@ def metalCommand():
         stackSizeBox.insert(END, " - ")
         stackSizeBox.insert(END, stackSizeApproxHigh)
         stackSizeBox.config(state=DISABLED)
+    charcoalTotal = math.ceil(woodNeeded * 0.75 * int(furnacesBox.get()))
+    charcoalBox.config(state=NORMAL)
+    charcoalBox.insert(END, charcoalTotal)
+    charcoalBox.config(state=DISABLED)
     seconds = woodNeeded * 2
     secondsTimer = seconds
     totalSeconds = int(seconds)
@@ -199,6 +211,7 @@ def metalCommand():
 def sulfurCommand():
     global secondsTimer
     global totalSeconds
+    global charcoalTotal
     seconds = 0
     minutes = 0
     sulfurOreCheck = int(sulfurOreBox.get()) / int(furnacesBox.get())
@@ -228,6 +241,10 @@ def sulfurCommand():
         stackSizeBox.insert(END, " - ")
         stackSizeBox.insert(END, stackSizeApproxHigh)
         stackSizeBox.config(state=DISABLED)
+    charcoalTotal = math.ceil(woodNeeded * 0.75 * int(furnacesBox.get()))
+    charcoalBox.config(state=NORMAL)
+    charcoalBox.insert(END, charcoalTotal)
+    charcoalBox.config(state=DISABLED)
     seconds = woodNeeded * 2
     secondsTimer = seconds
     totalSeconds = int(seconds)
@@ -254,6 +271,7 @@ def sulfurCommand():
 def hqCommand():
     global secondsTimer
     global totalSeconds
+    global charcoalTotal
     seconds = 0
     minutes = 0
     hqOreCheck = int(hqOreBox.get()) / int(furnacesBox.get())
@@ -283,6 +301,10 @@ def hqCommand():
         stackSizeBox.insert(END, " - ")
         stackSizeBox.insert(END, stackSizeApproxHigh)
         stackSizeBox.config(state=DISABLED)
+    charcoalTotal = math.ceil(woodNeeded * 0.75 * int(furnacesBox.get()))
+    charcoalBox.config(state=NORMAL)
+    charcoalBox.insert(END, charcoalTotal)
+    charcoalBox.config(state=DISABLED)
     seconds = woodNeeded * 2
     secondsTimer = seconds
     totalSeconds = int(seconds)
@@ -317,6 +339,7 @@ hqOreLabel = Label(app, bg='#33393B', fg='white', text="Total HQM", justify=CENT
 stackSizeLabel = Label(app, bg='#33393B', fg='white', text="Stack Size", justify=CENTER)
 woodRequiredPFLabel = Label(app, bg='#33393B', fg='white', text="Wood Per Furnace", justify=CENTER)
 woodRequiredLabel = Label(app, bg='#33393B', fg='white', text="Wood Total", justify=CENTER)
+charcoalLabel = Label(app, bg='#33393B', fg='white', text="Charcoal", justify=CENTER)
 timeLabel = Label(app, bg='#33393B', fg='white', text="Time to Complete", justify=CENTER)
 
 #Info
@@ -335,7 +358,8 @@ hqOreLabel.grid(row = 6, column = 0, sticky = S, pady = (10, 3))
 stackSizeLabel.grid(row = 0, column = 2, sticky = S, pady = (10, 3))
 woodRequiredPFLabel.grid(row = 2, column = 2, sticky = S, pady = (10, 3))
 woodRequiredLabel.grid(row = 4, column = 2, sticky = S, pady = (10, 3))
-timeLabel.grid(row = 6, column = 2, sticky = S, pady = (10, 3))
+charcoalLabel.grid(row = 6, column = 2, sticky = S, pady = (10, 3))
+timeLabel.grid(row = 8, column = 1, sticky = S, pady = (10, 3))
 
 #-----End of Placing Labels-----#
 
@@ -350,6 +374,7 @@ hqOreBox = Entry(app, bg='#1B1F20', highlightbackground="#525C5F", fg='white', j
 stackSizeBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
 woodRequiredPFBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
 woodRequiredBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
+charcoalBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
 timeBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
 
 #-----End of Text Boxes-----#
@@ -374,7 +399,8 @@ hqOreBox.grid(row = 7, column = 0, sticky = N, padx = 10)
 stackSizeBox.grid(row = 1, column = 2, sticky = N, padx = 10)
 woodRequiredPFBox.grid(row = 3, column = 2, sticky = N, padx = 10)
 woodRequiredBox.grid(row = 5, column = 2, sticky = N, padx = 10)
-timeBox.grid(row = 7, column = 2, sticky = N, padx = 10)
+charcoalBox.grid(row = 7, column = 2, sticky = N, padx = 10)
+timeBox.grid(row = 9, column = 1, sticky = N, padx = 10)
 
 #-----End of Placing Text Boxes-----#
 
@@ -386,10 +412,7 @@ reset = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, high
 #Placing Buttons
 calculate.grid(row=2, column=1, sticky=N, pady=(10,0), padx=5)
 startTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
-reset.grid(row=8, column=1, sticky=S, padx=5, pady=(10,10))
-
-#Check for input
-
+reset.grid(row=10, column=1, sticky=S, padx=5, pady=(10,10))
 
 #Program Loop
 app.mainloop()
