@@ -359,7 +359,7 @@ stackSizeLabel.grid(row = 0, column = 2, sticky = S, pady = (10, 3))
 woodRequiredPFLabel.grid(row = 2, column = 2, sticky = S, pady = (10, 3))
 woodRequiredLabel.grid(row = 4, column = 2, sticky = S, pady = (10, 3))
 charcoalLabel.grid(row = 6, column = 2, sticky = S, pady = (10, 3))
-timeLabel.grid(row = 8, column = 1, sticky = S, pady = (10, 3))
+timeLabel.grid(row = 6, column = 1, sticky = S, pady = (10, 3))
 
 #-----End of Placing Labels-----#
 
@@ -400,7 +400,7 @@ stackSizeBox.grid(row = 1, column = 2, sticky = N, padx = 10)
 woodRequiredPFBox.grid(row = 3, column = 2, sticky = N, padx = 10)
 woodRequiredBox.grid(row = 5, column = 2, sticky = N, padx = 10)
 charcoalBox.grid(row = 7, column = 2, sticky = N, padx = 10)
-timeBox.grid(row = 9, column = 1, sticky = N, padx = 10)
+timeBox.grid(row = 7, column = 1, sticky = N, padx = 10)
 
 #-----End of Placing Text Boxes-----#
 
@@ -412,7 +412,7 @@ reset = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, high
 #Placing Buttons
 calculate.grid(row=2, column=1, sticky=N, pady=(10,0), padx=5)
 startTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
-reset.grid(row=10, column=1, sticky=S, padx=5, pady=(10,10))
+reset.grid(row=8, column=1, sticky=S, padx=5, pady=(10,10))
 
 #Program Loop
 app.mainloop()
