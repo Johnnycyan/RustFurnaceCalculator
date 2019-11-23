@@ -2,14 +2,15 @@ from tkinter import *
 import math
 import time
 
-#Main Section
+#region Main Section
 app = Tk()
 app.title('Rust Furnace Calculator')
 app.iconbitmap('resources/Rust.ico')
 app.configure(background='#33393B')
 app.resizable(False, False)
+#endregion
 
-#Variables
+#region Variables
 metalOreBoxContent = ''
 metalOre = 0
 sulfurOre = 0
@@ -35,6 +36,7 @@ secondsTimer = 0
 minutesTimer = 0
 timer = ""
 woodTotalNeeded = 0
+#endregion
 
 def resetCommand():
     errorLabel.grid_forget()
@@ -127,9 +129,9 @@ def timerCommand():
             if (minutesTimer > 0 and secondsTimer == 0):
                 minutesTimer -= 1
                 secondsTimer += 60
-            for i in range(25):
+            for i in range(10):
                 app.update()
-                time.sleep(0.039)
+                time.sleep(0.099)
         elif stackSizeBox.get() == '':
             timeBox.config(state=NORMAL)
             timeBox.delete(0, END)
@@ -190,7 +192,7 @@ def metalCommand():
     while seconds >= 60:
         minutes += 1
         seconds -= 60
-    if woodNeeded > 2000:
+    if woodNeeded > 1500:
         errorLabel.config(text="You are smelting too much. This will cause overflow.")
         errorLabel.grid(row = 9, column = 0, columnspan = 3 , sticky = S, pady = (0, 3))
     woodTotalNeeded = woodNeeded * int(furnacesBox.get())
@@ -328,7 +330,7 @@ def hqCommand():
     timeBox.insert(END, "s")
     timeBox.config(state=DISABLED)
 
-#-----Labels-----#
+#region Labels
 #Inputs
 furnacesLabel = Label(app, bg='#33393B', fg='white', text="Furnaces", justify=CENTER)
 metalOreLabel = Label(app, bg='#33393B', fg='white', text="Total Metal", justify=CENTER)
@@ -342,12 +344,13 @@ woodRequiredLabel = Label(app, bg='#33393B', fg='white', text="Wood Total", just
 charcoalLabel = Label(app, bg='#33393B', fg='white', text="Charcoal", justify=CENTER)
 timeLabel = Label(app, bg='#33393B', fg='white', text="Time to Complete", justify=CENTER)
 
+
 #Info
 errorLabel = Label(app, bg='#33393B', fg='white', text='', justify=CENTER)
 
-#-----End of Labels-----#
+#endregion
 
-#-----Place Labels-----#
+#region Place Labels
 #Inputs
 furnacesLabel.grid(row = 0, column = 0, sticky = S, pady = (10, 3))
 metalOreLabel.grid(row = 2, column = 0, sticky = S, pady = (10, 3))
@@ -361,9 +364,9 @@ woodRequiredLabel.grid(row = 4, column = 2, sticky = S, pady = (10, 3))
 charcoalLabel.grid(row = 6, column = 2, sticky = S, pady = (10, 3))
 timeLabel.grid(row = 6, column = 1, sticky = S, pady = (10, 3))
 
-#-----End of Placing Labels-----#
+#endregion
 
-#-----Text Boxes-----
+#region Text Boxes
 #Inputs
 furnacesBox = Entry(app, bg='#1B1F20', highlightbackground="#525C5F", fg='white', justify=CENTER)
 metalOreBox = Entry(app, bg='#1B1F20', highlightbackground="#525C5F", fg='white', justify=CENTER)
@@ -377,8 +380,6 @@ woodRequiredBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disa
 charcoalBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
 timeBox = Entry(app, highlightbackground="#525C5F", justify=CENTER, disabledforeground="white", disabledbackground="#1B1F20", state=DISABLED)
 
-#-----End of Text Boxes-----#
-
 #Prefill Text Boxes
 furnacesBox.insert(END, "1")
 
@@ -388,7 +389,9 @@ metalOreBox.bind("<Return>", lambda event: calculateCommand())
 sulfurOreBox.bind("<Return>", lambda event: calculateCommand())
 hqOreBox.bind("<Return>", lambda event: calculateCommand())
 
-#-----Place Text Boxes-----#
+#endregion
+
+#region Place Text Boxes
 #Inputs
 furnacesBox.grid(row = 1, column = 0, sticky = N, padx = 10)
 metalOreBox.grid(row = 3, column = 0, sticky = N, padx = 10)
@@ -402,17 +405,19 @@ woodRequiredBox.grid(row = 5, column = 2, sticky = N, padx = 10)
 charcoalBox.grid(row = 7, column = 2, sticky = N, padx = 10)
 timeBox.grid(row = 7, column = 1, sticky = N, padx = 10)
 
-#-----End of Placing Text Boxes-----#
+#endregion
 
-#Buttons
+#region Buttons
 calculate = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Calculate", command=calculateCommand)
 startTimer = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Start Timer", command=timerCommand)
 reset = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Reset", command=resetCommand)
+#endregion
 
-#Placing Buttons
+#region Placing Buttons
 calculate.grid(row=2, column=1, sticky=N, pady=(10,0), padx=5)
 startTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
 reset.grid(row=8, column=1, sticky=S, padx=5, pady=(10,10))
+#endregion
 
 #Program Loop
 app.mainloop()
