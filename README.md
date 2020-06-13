@@ -18,9 +18,9 @@ Using the Calculator:
 
 1. Type in how many furnaces you want to split the ore between. If you only want to use 1 just leave it as default.
 
-2. Type in the amount of ore you want to smelt in one of the 3 ore type boxes.
+2. Type in the amount of ore you want to smelt in one of the 3 ore type boxes. (Or if you just want the maximum safe amount of ore click on the "Total Metal", "Total Sulfur", or "Total HQM" labels to automatically fill in the number of ore; and skip step 3.)
 
-3. Press the Calculate button. The output boxes will fill in with the info you need.
+3. Press the Calculate button, or hit enter. The output boxes will fill in with the info you need.
 
 4. Use the number(s) in the Stack Size box to manually split the ore into 12 slots in each furnace. (Select the ore in your inventory and right click the split number to type in your own split size.)
 
