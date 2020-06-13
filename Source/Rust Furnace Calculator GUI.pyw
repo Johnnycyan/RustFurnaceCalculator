@@ -38,6 +38,8 @@ timer = ""
 woodTotalNeeded = 0
 #endregion
 
+#region Commands
+
 def resetCommand():
     errorLabel.grid_forget()
     furnacesBox.delete(0, END)
@@ -192,7 +194,7 @@ def metalCommand():
     while seconds >= 60:
         minutes += 1
         seconds -= 60
-    if woodNeeded > 1500:
+    if metalOreCheck > 3000:
         errorLabel.config(text="You are smelting too much. This will cause overflow.")
         errorLabel.grid(row = 9, column = 0, columnspan = 3 , sticky = S, pady = (0, 3))
     woodTotalNeeded = woodNeeded * int(furnacesBox.get())
@@ -253,7 +255,7 @@ def sulfurCommand():
     while seconds >= 60:
         minutes += 1
         seconds -= 60
-    if woodNeeded > 1000:
+    if sulfurOreCheck > 3960:
         errorLabel.config(text="You are smelting too much. This will cause overflow.")
         errorLabel.grid(row = 9, column = 0, columnspan = 3 , sticky = S, pady = (0, 3))
     woodTotalNeeded = woodNeeded * int(furnacesBox.get())
@@ -313,7 +315,7 @@ def hqCommand():
     while seconds >= 60:
         minutes += 1
         seconds -= 60
-    if woodNeeded > 1000:
+    if hqOreCheck > 1800:
         errorLabel.config(text="You are smelting too much. This will cause overflow.")
         errorLabel.grid(row = 9, column = 0, columnspan = 3 , sticky = S, pady = (0, 3))
     woodTotalNeeded = woodNeeded * int(furnacesBox.get())
@@ -329,6 +331,35 @@ def hqCommand():
     timeBox.insert(END, format(seconds, '02d'))
     timeBox.insert(END, "s")
     timeBox.config(state=DISABLED)
+
+def maxMetalCommand():
+    tempFurnace = int(furnacesBox.get())
+    resetCommand()
+    furnacesBox.delete(0, END)
+    furnacesBox.insert(END, tempFurnace)
+    maxMetalCalc = 3000 * tempFurnace
+    metalOreBox.insert(END, maxMetalCalc)
+    metalCommand()
+
+def maxSulfurCommand():
+    tempFurnace = int(furnacesBox.get())
+    resetCommand()
+    furnacesBox.delete(0, END)
+    furnacesBox.insert(END, tempFurnace)
+    maxSulfurCalc = 3960 * tempFurnace
+    sulfurOreBox.insert(END, maxSulfurCalc)
+    sulfurCommand()
+
+def maxHQMCommand():
+    tempFurnace = int(furnacesBox.get())
+    resetCommand()
+    furnacesBox.delete(0, END)
+    furnacesBox.insert(END, tempFurnace)
+    maxHQMCalc = 1800 * tempFurnace
+    hqOreBox.insert(END, maxHQMCalc)
+    hqCommand()
+
+#endregion
 
 #region Labels
 #Inputs
@@ -347,6 +378,11 @@ timeLabel = Label(app, bg='#33393B', fg='white', text="Time to Complete", justif
 
 #Info
 errorLabel = Label(app, bg='#33393B', fg='white', text='', justify=CENTER)
+
+#Bind Labels
+metalOreLabel.bind("<Button-1>", lambda event: maxMetalCommand())
+sulfurOreLabel.bind("<Button-1>", lambda event: maxSulfurCommand())
+hqOreLabel.bind("<Button-1>", lambda event: maxHQMCommand())
 
 #endregion
 
