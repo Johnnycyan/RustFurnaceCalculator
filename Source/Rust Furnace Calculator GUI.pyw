@@ -1,6 +1,7 @@
 from tkinter import *
 import math
 import time
+import threading
 
 #region Main Section
 app = Tk()
@@ -36,11 +37,19 @@ secondsTimer = 0
 minutesTimer = 0
 timer = ""
 woodTotalNeeded = 0
+pausing = "False"
 #endregion
 
 #region Commands
 
 def resetCommand():
+    global pausing
+    global resetting
+    global totalSeconds
+    global secondsTimer
+    global minutesTimer
+    resetting = 'y'
+    pausing = "False"
     errorLabel.grid_forget()
     furnacesBox.delete(0, END)
     furnacesBox.insert(END, "1")
@@ -62,8 +71,18 @@ def resetCommand():
     timeBox.config(state=NORMAL)
     timeBox.delete(0, END)
     timeBox.config(state=DISABLED)
+    startTimer.config(state=NORMAL)
+    pauseTimer.grid_forget()
+    startTimer.config(state=NORMAL)
+    startTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
+    totalSeconds = 0
+    secondsTimer = 0
+    minutesTimer = 0
 
 def resetOutput():
+    global totalSeconds
+    global secondsTimer
+    global minutesTimer
     stackSizeBox.config(state=NORMAL)
     stackSizeBox.delete(0, END)
     stackSizeBox.config(state=DISABLED)
@@ -79,12 +98,16 @@ def resetOutput():
     timeBox.config(state=NORMAL)
     timeBox.delete(0, END)
     timeBox.config(state=DISABLED)
+    totalSeconds = 0
+    secondsTimer = 0
+    minutesTimer = 0
 
 def calculateCommand():
     global resetting
     resetting = 'y'
     resetOutput()
     errorLabel.grid_forget()
+    startTimer.config(state=NORMAL)
     if metalOreBox.get() != '' and sulfurOreBox.get() != '':
         errorLabel.config(text="There was an error. Check your inputs.")
         errorLabel.grid(row = 9, column = 0, columnspan = 3 , sticky = S, pady = (0, 3))
@@ -106,9 +129,13 @@ def timerCommand():
     global totalSeconds
     global minutesTimer
     global resetting
+    global pausing
     resetting = 'n'
     timeBoxInsert = ""
+    startTimer.config(state=DISABLED)
     for i in range(totalSeconds, -1, -1):
+        while pausing == "True":
+            time.sleep(0.1)
         while secondsTimer > 60:
             minutesTimer += 1
             secondsTimer -= 60
@@ -131,9 +158,8 @@ def timerCommand():
             if (minutesTimer > 0 and secondsTimer == 0):
                 minutesTimer -= 1
                 secondsTimer += 60
-            for i in range(10):
-                app.update()
-                time.sleep(0.099)
+            app.update()
+            time.sleep(1)
         elif stackSizeBox.get() == '':
             timeBox.config(state=NORMAL)
             timeBox.delete(0, END)
@@ -142,14 +168,18 @@ def timerCommand():
             totalSeconds = 0
             minutesTimer = 0
             app.update_idletasks()
+            startTimer.config(state=NORMAL)
         elif resetting == 'y':
             app.update_idletasks()
+            x.join()
+            startTimer.config(state=NORMAL)
         else:
             timeBox.config(state=NORMAL)
             timeBox.delete(0, END)
             timeBox.insert(END, "Smelting Complete!")
             timeBox.config(state=DISABLED)
             app.update_idletasks()
+            startTimer.config(state=NORMAL)
 
 def metalCommand():
     global secondsTimer
@@ -359,6 +389,26 @@ def maxHQMCommand():
     hqOreBox.insert(END, maxHQMCalc)
     hqCommand()
 
+def threadingTimer():
+    global pausing
+    if pausing == "True":
+        pausing = "False"
+        startTimer.grid_forget()
+        pauseTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
+    else:
+        startTimer.grid_forget()
+        pauseTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
+        x = threading.Thread(target=timerCommand)
+        x.start()
+
+def pauseTimerCommand():
+    global pausing
+    pausing = "True"
+    pauseTimer.grid_forget()
+    startTimer.config(state=NORMAL)
+    startTimer.grid(row=4, column=1, sticky=S, pady=(10,0), padx=5)
+
+
 #endregion
 
 #region Labels
@@ -445,7 +495,8 @@ timeBox.grid(row = 7, column = 1, sticky = N, padx = 10)
 
 #region Buttons
 calculate = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Calculate", command=calculateCommand)
-startTimer = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Start Timer", command=timerCommand)
+startTimer = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Start Timer", command=threadingTimer)
+pauseTimer = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Pause Timer", command=pauseTimerCommand)
 reset = Button(app, bg='#33393B', activebackground='#1B1F20', relief=RIDGE, highlightbackground="#525C5F", fg='white', text="Reset", command=resetCommand)
 #endregion
 
